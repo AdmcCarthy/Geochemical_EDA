@@ -1,0 +1,51 @@
+---
+title: "Organic Geochemistry Analysis"
+author: "Adam McCarthy"
+date: "29 august 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+library(ggplot2)
+library(ggthemes)
+library(scales)
+library(gridExtra)
+library(GGally)
+```
+
+Taking data provided by....
+
+```{r import_data, echo=FALSE, warning=FALSE}
+# Data is stored one folder up, then within the data folder.
+setwd("..")
+f_path <- file.path("data", "organic_geochem_tab.csv")
+
+# Read in the tab deliminated version to format properly for R.
+df <- read.csv(f_path, sep = "\t",  # Tab seperated file
+               encoding = "UTF-8",  # File encoding required to read
+               stringsAsFactors = FALSE,  # Manually assign factors after import
+               na.strings = c("","NA"))  # Specify that blank strings are NAN
+```
+
+## Exploratory Data Analysis
+
+```{r echo=FALSE, scatter_sulf, fig.height = 5, fig.width = 5}
+ggplot(aes(x = df$S1.mg.g.rock., y = df$S2.mg.g.rock.),
+       data = df) +
+  geom_point(na.rm = FALSE,
+             alpha = 0.2,
+             position = position_jitter(),
+             color = '#192231') +
+  theme_tufte() +
+  labs(
+    title = "Test",
+    x = "S1",
+    y = "S2"
+    )
+```
+
+## Conclusions
