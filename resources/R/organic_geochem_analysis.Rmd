@@ -1,7 +1,5 @@
 ---
 title: "Organic Geochemistry Analysis"
-author: "Adam McCarthy"
-date: "29 august 2017"
 output: html_document
 ---
 
@@ -42,8 +40,6 @@ df_gc$X <- NULL
 
 Example of plots.
 
-Univariate plots:
-
 ```{r echo=FALSE, warning=FALSE, U2, fig.height = 3, fig.width = 5, fig.align="center"}
 small_hist <- function(data_v, name, scale, df=df_gc) {
 plt <- ggplot(data = df, aes(data_v)) + 
@@ -74,7 +70,7 @@ plt1
 
 Bivariate plots:
 
-```{r echo=FALSE, warning=FALSE, scatter_sulf, fig.height = 5, fig.width = 5}
+```{r echo=FALSE, warning=FALSE, scatter_sulf, fig.height = 8, fig.width = 8}
 ggplot(aes(y = df_gc$HI.mg.HC.g.TOC., x = df_gc$OI.mg.CO2.g.TOC.),
        data = df_gc) +
   geom_point(na.rm = FALSE,
@@ -97,14 +93,14 @@ ggplot(aes(y = df_gc$HI.mg.HC.g.TOC., x = df_gc$OI.mg.CO2.g.TOC.),
 
 Correlation matrix:
 
-```{r echo=FALSE, correlation_matrix, fig.height = 5, fig.width = 5, message=FALSE, warning=FALSE}
+```{r echo=FALSE, correlation_matrix, fig.height = 10, fig.width = 10, message=FALSE, warning=FALSE}
 ggcorr(df_gc)  +
   theme_tufte()
 ```
 
 Pair plot:
 
-```{r echo=FALSE, freq_pair_plot, fig.height = 9, fig.width = 9, message=FALSE, warning=FALSE,}
+```{r echo=FALSE, freq_pair_plot, fig.height = 15, fig.width = 15, message=FALSE, warning=FALSE,}
 # List of columns to drop as they have too many string values for a pair plot
 drops <- c("WELL.NAME", "SAMPLE.ID", "ORIGINATOR", 
            "COMMENTS", "ROCKEVAL_ANALYST", "VR_ANALYST")
