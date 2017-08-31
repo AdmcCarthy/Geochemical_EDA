@@ -5,6 +5,8 @@ date: "29 august 2017"
 output: html_document
 ---
 
+Dataset © Commonwealth of Australia (Geoscience Australia) 2017
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -17,7 +19,11 @@ library(gridExtra)
 library(GGally)
 ```
 
-Taking data provided by....
+Taking data provided by Geoscience Australlia allows for an exploratory
+data analysis to be undertaken on geochemical rock eval. data.
+
+This project is a template to allow for anyone to try out R using a
+large dataset of geochemical data points.
 
 ```{r import_data, echo=FALSE, warning=FALSE}
 # Data is stored one folder up, then within the data folder.
@@ -25,27 +31,85 @@ setwd("..")
 f_path <- file.path("data", "organic_geochem_tab.csv")
 
 # Read in the tab deliminated version to format properly for R.
-df <- read.csv(f_path, sep = "\t",  # Tab seperated file
+df_gc <- read.csv(f_path, sep = "\t",  # Tab seperated file
                encoding = "UTF-8",  # File encoding required to read
                stringsAsFactors = FALSE,  # Manually assign factors after import
                na.strings = c("","NA"))  # Specify that blank strings are NAN
+
+# Remove X as this is the same as index
+df_gc$X <- NULL
 ```
 
-## Exploratory Data Analysis
+Example of plots.
 
-```{r echo=FALSE, scatter_sulf, fig.height = 5, fig.width = 5}
-ggplot(aes(x = df$S1.mg.g.rock., y = df$S2.mg.g.rock.),
-       data = df) +
+Univariate plots:
+
+```{r echo=FALSE, warning=FALSE, U2, fig.height = 3, fig.width = 5, fig.align="center"}
+small_hist <- function(data_v, name, scale, df=df_gc) {
+plt <- ggplot(data = df, aes(data_v)) + 
+  geom_histogram(bins = 50,
+                 col = "white",
+                 fill = "#9099A2"
+                 ) +
+  theme_tufte() +
+  labs(
+    title = name
+    ) +
+  labs(
+    x = scale,
+    y = "Count"
+    )
+
+return(plt)
+}
+
+plt1 <- small_hist(df_gc$TOC.wt..., 
+  "TOC", "%")
+
+# Convert to a logarithmic scale to acount for the distribution of data points.
+plt1 <- plt1 + scale_x_log10()
+
+plt1
+```
+
+Bivariate plots:
+
+```{r echo=FALSE, warning=FALSE, scatter_sulf, fig.height = 5, fig.width = 5}
+ggplot(aes(y = df_gc$HI.mg.HC.g.TOC., x = df_gc$OI.mg.CO2.g.TOC.),
+       data = df_gc) +
   geom_point(na.rm = FALSE,
              alpha = 0.2,
              position = position_jitter(),
              color = '#192231') +
   theme_tufte() +
   labs(
-    title = "Test",
-    x = "S1",
-    y = "S2"
-    )
+    title = "OI vs HI",
+    y = "HI",
+    x = "OI"
+    ) + 
+  xlim(0, 
+       500
+       ) +
+  ylim(0, 
+       1000
+       )
 ```
 
-## Conclusions
+Correlation matrix:
+
+```{r echo=FALSE, correlation_matrix, fig.height = 5, fig.width = 5, message=FALSE, warning=FALSE}
+ggcorr(df_gc)  +
+  theme_tufte()
+```
+
+Pair plot:
+
+```{r echo=FALSE, freq_pair_plot, fig.height = 9, fig.width = 9, message=FALSE, warning=FALSE,}
+# List of columns to drop as they have too many string values for a pair plot
+drops <- c("WELL.NAME", "SAMPLE.ID", "ORIGINATOR", 
+           "COMMENTS", "ROCKEVAL_ANALYST", "VR_ANALYST")
+
+ggpairs(df_gc[ , !(names(df_gc) %in% drops)]
+        ) +
+  theme_minimal()
+```
