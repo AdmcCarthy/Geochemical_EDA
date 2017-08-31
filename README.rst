@@ -10,6 +10,13 @@ Getting Started
 
 Read the `report <https://admccarthy.github.io/Geochemical_EDA/>`_.
 
+To try out the an example of the dataset in R or python clone the repository.
+
+For python there is a `notebook <https://github.com/AdmcCarthy/Geochemical_EDA/blob/master/resources/notebooks/Organic%20Geochemistry%20Data%20Preperation.ipynb>`_ to get started.
+
+In R there is a R project suitable for R studio with an R markdown
+to get started.
+
 Getting the data
 ----------------
 
