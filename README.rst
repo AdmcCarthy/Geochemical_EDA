@@ -8,7 +8,7 @@ Exploratory Data Analysis of Rock Eval. Geochemical data from Australlia
 Getting Started
 ---------------
 
-Read the `report <>`_.
+Read the `report <https://admccarthy.github.io/Geochemical_EDA/>`_.
 
 Getting the data
 ----------------
